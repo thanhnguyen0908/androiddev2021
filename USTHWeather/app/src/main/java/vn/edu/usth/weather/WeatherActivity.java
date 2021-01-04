@@ -1,54 +1,86 @@
 package vn.edu.usth.weather;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-
-import android.util.Log;
-import android.widget.Toast; // Use Toast class to display message
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class WeatherActivity extends AppCompatActivity {
 
+    WeatherAndForecastFragment weatherAndForecastFragment;
+    ViewPager viewPager;
+    TextView pagination;
+    int total = 4, count = 1;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        // Create a new fragment to be placed in the activity
-        ForecastFragment firstFragment = new ForecastFragment();
+        viewPager = findViewById(R.id.view_pager);
+        pagination = findViewById(R.id.pagination);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
 
-        // Add the fragment to the 'container' FrameLayout
-        getSupportFragmentManager().beginTransaction().add(R.id.container, firstFragment).commit();
+        viewPager.setAdapter(new SliderAdapter(getSupportFragmentManager()));
+
+        pagination.setText(count + "/" + total);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                count = 0;
+                count = position + 1;
+                pagination.setText(count + "/" + total);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
-        Log.i("WeatherActivity", "onStart"); // Send an INFO log message
+        Log.i(getClass().getName(), "Weather Activity onStart");
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
-        Log.i("WeatherActivity", "onResume"); // Send an INFO log message
+        Log.i(getClass().getName(), "Weather Activity onResume");
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
-        Log.i("WeatherActivity", "onPause"); // Send an INFO log message
+        Log.i(getClass().getName(), "Weather Activity onPause");
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
-        Log.i("WeatherActivity", "onStop"); // Send an INFO log message
+        Log.i(getClass().getName(), "Weather Activity onStop");
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
-        Log.i("WeatherActivity", "onDestroy"); // Send an INFO log message
+        Log.i(getClass().getName(), "Weather Activity onDestroy");
     }
+
 }
